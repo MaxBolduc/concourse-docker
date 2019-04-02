@@ -7,7 +7,8 @@ services:
     - POSTGRES_DB=concourse
     - POSTGRES_PASSWORD=concourse_pass
     - POSTGRES_USER=concourse_user
-    - PGDATA=/database
+    volumes:
+    - concourse_db:/var/lib/postgresql/data
 
   concourse-web:
     image: concourse/concourse
@@ -22,8 +23,8 @@ services:
     - CONCOURSE_POSTGRES_PASSWORD=concourse_pass
     - CONCOURSE_POSTGRES_DATABASE=concourse
     - CONCOURSE_EXTERNAL_URL
-    - CONCOURSE_ADD_LOCAL_USER=test:test
-    - CONCOURSE_MAIN_TEAM_LOCAL_USER=test
+    - CONCOURSE_ADD_LOCAL_USER=dracotech:dracotech
+    - CONCOURSE_MAIN_TEAM_LOCAL_USER=dracotech
 
   concourse-worker:
     image: concourse/concourse
@@ -35,3 +36,7 @@ services:
     environment:
     - CONCOURSE_TSA_HOST=concourse-web:2222
     - CONCOURSE_GARDEN_NETWORK
+
+volumes:
+  concourse_db:
+    external: true
